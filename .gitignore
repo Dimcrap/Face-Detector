@@ -1,0 +1,15 @@
+build/
+bin/
+*.o
+*.so
+*.a
+
+.vscode/
+.idea/
+*.swp
+
+*.tmp
+*.log
+
+CMakeCache.txt
+
