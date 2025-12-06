@@ -1,3 +1,4 @@
+#pragma once
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -12,4 +13,6 @@ class GLFWWindow{
         void pollEvents (){return glfwPollEvents();}
         void swapBuffers(){ glfwSwapBuffers(m_window);}
         void cleanup(){ glfwDestroyWindow(m_window);glfwTerminate();}
+        void setCurrWindow(){glfwMakeContextCurrent(m_window);
+            std::cout << "Making context current for window: " << m_window << std::endl;}
 };

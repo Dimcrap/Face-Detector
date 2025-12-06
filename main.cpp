@@ -1,18 +1,35 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <vector>
+#include "app.h"
 
 void detectanddisplay(cv::Mat frame);
 
 cv::CascadeClassifier face_cascade;
 
 
+int main(int argc,const char **argv){
+   
+    App app;
+
+    if(!app.initialize()){
+        std::cerr<<"could't initialize the app";
+        return -1;
+    }
+
+    app.run();
+    app.cleanup();
+
+    return 0;
+}
 
 
+
+/*
 int main(int argc,const char ** argv){
     cv::CommandLineParser parser(argc,argv,
-                        "{help h||}"
-                        "{face_cascade|"
+    "{help h||}"
+    "{face_cascade|"
                         "/home/unred/opencv/data/haarcascades/haarcascade_frontalface_alt.xml"
                         "|Path to face cascade.}"
                         "{camera|0|Camera device number.}");
@@ -20,7 +37,7 @@ int main(int argc,const char ** argv){
         parser.about("\nThis program demonstrates using the"
             " cv::CascadeClassifier class to detect object Face in a Video stream.\n");
         parser.printMessage();
-
+        
         cv::String face_cascade_name =cv::samples::findFile(parser.get<cv::String>("face_cascade"));
         
         if(!face_cascade.load(face_cascade_name) )
@@ -28,28 +45,28 @@ int main(int argc,const char ** argv){
             std::cout<<"--(!)Error loading face cascade\n";
             return -1;
         }
-
-
-    int camera_device =parser.get<int>("camera");
-    cv::VideoCapture cap;
-    cap.open(camera_device);
+        
+        
+        int camera_device =parser.get<int>("camera");
+        cv::VideoCapture cap;
+        cap.open(camera_device);
     if(!cap.isOpened()){
         std::cerr<<"failed to load video capturing.\n could not access webcam";
         return -1;
     }else{
         std::cout<<"webcam opened successfully.";
     }
-
+    
     cv::Mat frame;
     bool ret=cap.read(frame);
-
+    
     while(cap.read(frame))
     {
         if(frame.empty()){
             std::cout<<"--(!) No captured frame --break!\n";
             break;
         }
-
+        
         detectanddisplay(frame);
         
         if(cv::waitKey(10)==27){
@@ -57,11 +74,12 @@ int main(int argc,const char ** argv){
         };
         //cv::destroyAllWindows();
     }
-
+    
     //cap.release();
     return 0;
-
+    
 }
+*/
 
 void detectanddisplay(cv::Mat frame){
     cv::Mat frame_gray;

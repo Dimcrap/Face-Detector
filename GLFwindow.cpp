@@ -3,6 +3,7 @@
 bool GLFWWindow::init(int width,int height ,
     const char * title)
 { 
+
 if(!glfwInit()){
     std::cerr<<"Failed to initialize GLFW\n";
     return false;

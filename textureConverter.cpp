@@ -1,10 +1,20 @@
 #include "textureConverter.h"
+#include <GLFW/glfw3.h>
 
 GLuint TextureConverter::matToTexture(const cv::Mat & mat,GLenum minFilter,
     GLenum magFilter,GLenum wrapMode)
     {
+        while (glGetError() != GL_NO_ERROR);
+
         glGenTextures(1,&textureID);
-        glBindTexture(GL_TEXTURE_2D,textureID);
+         if(textureID ==0) {std::cerr<<"textureID error\n";return 0;}
+          
+    std::cout << "Generated texture ID: " << textureID << std::endl;
+    if (!glIsTexture(textureID)) {
+        std::cout << "ERROR: glGenTextures gave invalid texture ID!" << std::endl;
+        return 0;
+    }    
+    glBindTexture(GL_TEXTURE_2D,textureID);
 
         glTexParameteri(GL_TEXTURE_2D,
             GL_TEXTURE_MIN_FILTER,minFilter);
@@ -39,6 +49,23 @@ GLuint TextureConverter::matToTexture(const cv::Mat & mat,GLenum minFilter,
 void TextureConverter::updateTexture(GLuint textureID,
                             const cv::Mat& mat)
 {
+    GLFWwindow* currentWindow = glfwGetCurrentContext();
+    if (!currentWindow) {
+        std::cout << "ERROR: No OpenGL context is current!" << std::endl;
+        return;
+    }
+    std::cout << "Current GLFW window: " << currentWindow << std::endl;
+    
+
+    while (glGetError() != GL_NO_ERROR);
+    glBindTexture(GL_TEXTURE_2D,textureID);
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR) {
+        std::cout << "glBindTexture error: " << err << std::endl;
+        return;
+    }
+
+
     GLenum format =(mat.channels() ==4) ?GL_BGRA:
                     (mat.channels() ==3) ? GL_BGR:GL_RED;
     
