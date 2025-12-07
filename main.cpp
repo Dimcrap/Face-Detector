@@ -30,7 +30,7 @@ int main(int argc,const char ** argv){
     cv::CommandLineParser parser(argc,argv,
     "{help h||}"
     "{face_cascade|"
-                        "/home/unred/opencv/data/haarcascades/haarcascade_frontalface_alt.xml"
+                        "/home/unred/opencv/data/haarcascades/c"
                         "|Path to face cascade.}"
                         "{camera|0|Camera device number.}");
                     

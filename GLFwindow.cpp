@@ -25,6 +25,18 @@ if(!m_window){
 }
 
 glfwMakeContextCurrent(m_window);
+
+glewExperimental=GL_TRUE;
+GLenum glewErr=glewInit();
+if(glewErr!=GLEW_OK){
+    std::cerr<<"Failed to initialize GLEW:"
+            <<glewGetErrorString(glewErr)<<std::endl;
+    glfwTerminate();
+    return false;
+}
+
+std::cout<<"OpenGL Version :"<<glGetString(GL_VERSION)<<std::endl;
+std::cout<<"GLSL Version:"<<glGetString(GL_SHADING_LANGUAGE_VERSION)<<std::endl;
 glfwSwapInterval(1);
 
 return true;

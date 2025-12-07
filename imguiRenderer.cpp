@@ -2,11 +2,11 @@
 
 void ImguiRenderer::init(GLFWwindow * window){
 
-    //VideoTextureID=0;
+    VideoTextureID=0;
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO & io =ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
 
     ImGui_ImplGlfw_InitForOpenGL(window,true);
     ImGui_ImplOpenGL3_Init("#version 330");
@@ -18,7 +18,7 @@ void ImguiRenderer::beginFrame(){
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
+    glClear(GL_COLOR_BUFFER_BIT);
     //ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 };
 

@@ -24,7 +24,7 @@ bool App::initialize(){
 void App::run(){
     while(!glfw_window.shouldClose() && isRunning){
         
-        glfw_window.setCurrWindow();
+       // glfw_window.setCurrWindow();
 
         imguirenderer.beginFrame();
         imguirenderer.renderVideoWindow(videoCap);
@@ -33,8 +33,8 @@ void App::run(){
         //renderSettingWindow();
 
         imguirenderer.renderFrame();
-        glfw_window.swapBuffers();
         glfw_window.pollEvents();
+        glfw_window.swapBuffers();
 
     }
 };
