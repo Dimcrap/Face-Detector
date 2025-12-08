@@ -14,8 +14,8 @@ bool App::initialize(){
         return false;
     }
 
-    videoCap.set(cv::CAP_PROP_FRAME_WIDTH,640);
-    videoCap.set(cv::CAP_PROP_FRAME_HEIGHT,480);
+    videoCap.set(cv::CAP_PROP_FRAME_WIDTH,1200/*640*/);
+    videoCap.set(cv::CAP_PROP_FRAME_HEIGHT,720/*480*/);
     videoCap.set(cv::CAP_PROP_FPS,30);
 
     return true;
@@ -30,7 +30,7 @@ void App::run(){
         imguirenderer.renderVideoWindow(videoCap);
         imguirenderer.renderControls();
         //renderDebugWindow();
-        //renderSettingWindow();
+        renderSettingWindow();
 
         imguirenderer.renderFrame();
         glfw_window.pollEvents();
@@ -41,11 +41,34 @@ void App::run(){
 
 
 void App::renderDebugWindow(){
-
+    
 };
+
 void App::renderSettingWindow(){
+    ImGui::Begin("Settings");
 
+    static int cameraIndex=0;
+    static int resolutionIndex=0;
+    const char* resolutions[]={"640x480","1200x720",
+    "1920x1080"};
+
+    if(ImGui::Combo("Resolution",&resolutionIndex,resolutions,
+    IM_ARRAYSIZE(resolutions))){
+        switch (resolutionIndex)
+        {
+        case 0: videoCap.set(cv::CAP_PROP_FRAME_WIDTH,640);
+        videoCap.set(cv::CAP_PROP_FRAME_HEIGHT,480);    
+        break;
+        case 1:
+        videoCap.set(cv::CAP_PROP_FRAME_WIDTH,1280);
+        videoCap.set(cv::CAP_PROP_FRAME_HEIGHT,720);
+        break;
+       
+    }
+}
+ImGui::End();
 };
+
 void App::cleanup(){
     imguirenderer.cleanup();
     glfw_window.cleanup();

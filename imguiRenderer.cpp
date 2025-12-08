@@ -77,15 +77,16 @@ void ImguiRenderer::renderControls(){
 
     static float threshold = 0.5f;
     static bool enableFaceDetection =true;
-    static int blurSize=5;
+    static int Brightness=5;
 
     ImGui::Text("OpenCV Controls");
     ImGui::Separator();
 
     ImGui::Checkbox("Enable Face Detectin",&enableFaceDetection);
     //ImGui::SliderFloat("Detection ThreshHold",&threshold,0.0f,1.0f);
-    ImGui::SliderInt("Blur Size",&blurSize,1,15);
-
+    ImGui::SliderInt("Blur Size",&Brightness,1,15);
+    //CV_CAP_PROP_BRIGHTNESS
+    
     if(ImGui::Button("Take Snapshot")){
         cv::imwrite("snapshot.png",currentFrame);
     }
@@ -94,7 +95,7 @@ void ImguiRenderer::renderControls(){
 
     if(ImGui::Button("Reset Settings")){
         threshold=0.5f;
-        blurSize=5;
+        Brightness=5;
     }
 
     ImGuiIO & io=ImGui::GetIO();
