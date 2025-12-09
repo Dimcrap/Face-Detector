@@ -26,19 +26,18 @@ void ImguiRenderer::renderVideoWindow(cv::VideoCapture & cap){
     cap>>currentFrame;
         if(currentFrame.empty()) return;
 
-         std::cout << "Frame size: " << currentFrame.cols << 
-         "x" << currentFrame.rows << std::endl;
+       //std::cout << "Frame size: " << currentFrame.cols << 
+       //"x" << currentFrame.rows << std::endl;
 
         if(VideoTextureID ==0){
             VideoTextureID = textureconverter.matToTexture(currentFrame);
-              std::cout << "Created texture ID: " << VideoTextureID <<std::endl;
+            //  std::cout << "Created texture ID: " << VideoTextureID <<std::endl;
         }else{
             textureconverter.updateTexture(VideoTextureID,currentFrame);
-            std::cout << "Updated texture ID: " << VideoTextureID << 
-            std::endl;
+            //std::cout << "Updated texture ID: " << VideoTextureID << std::endl;
         }
 if (glIsTexture(VideoTextureID)) {
-    std::cout << "Texture " << VideoTextureID << " is valid OpenGL texture" << std::endl;
+   // std::cout << "Texture " << VideoTextureID << " is valid OpenGL texture" << std::endl;
 } else {
     std::cout << "Texture " << VideoTextureID << " is INVALID!" << std::endl;
 }
@@ -76,14 +75,18 @@ void ImguiRenderer::renderControls(){
     ImGui::Begin("Controls");
 
     static float threshold = 0.5f;
-    static bool enableFaceDetection =true;
+    static bool enableFaceDetection =false;
+    static bool oldEnableFD=enableFaceDetection;
     static int Brightness=5;
 
     ImGui::Text("OpenCV Controls");
     ImGui::Separator();
 
     ImGui::Checkbox("Enable Face Detectin",&enableFaceDetection);
-    //ImGui::SliderFloat("Detection ThreshHold",&threshold,0.0f,1.0f);
+    
+    if(enableFaceDetection!=oldEnableFD){
+        std::cout<<"detection enabled\n";
+    }
     ImGui::SliderInt("Blur Size",&Brightness,1,15);
     //CV_CAP_PROP_BRIGHTNESS
     

@@ -11,6 +11,7 @@ class ImguiRenderer{
         TextureConverter textureconverter;
         GLuint VideoTextureID;//=0;
         cv::Mat currentFrame;
+       
 
     public:
         void init(GLFWwindow * window);

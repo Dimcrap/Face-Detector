@@ -97,9 +97,6 @@ void detectanddisplay(cv::Mat frame){
 
         cv::Mat faceROI= frame_gray(faces[i]);
 
-        
-        
-
     }
     cv::imshow( "Capture Face detection",frame);
 
