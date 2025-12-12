@@ -5,6 +5,7 @@ GLuint TextureConverter::matToTexture(const cv::Mat & mat,GLenum minFilter,
     GLenum magFilter,GLenum wrapMode)
     {
         GLFWwindow* currentWindow = glfwGetCurrentContext();
+
     if (!currentWindow) {
         std::cerr << "CRITICAL ERROR: No OpenGL context is current!" << std::endl;
         return 0;
@@ -82,43 +83,37 @@ GLuint TextureConverter::matToTexture(const cv::Mat & mat,GLenum minFilter,
     };   
 
 
-void TextureConverter::detectandDrawFace(cv::Mat &frame){
-    cv::String face_cascade_name=cv::samples::findFile("/home/unred/opencv/data/"
-        "haarcascades/haarcascade_frontalface_alt.xml");
-    face_cascade.load(face_cascade_name);
-    cv::Mat frame_gray;
-    cv::cvtColor( frame, frame_gray, cv::COLOR_BGR2GRAY );
-    equalizeHist( frame_gray, frame_gray );
-    
-    //-- Detect faces
-    std::vector<cv::Rect> faces;
-    face_cascade.detectMultiScale( frame_gray, faces );
-    for ( size_t i = 0; i < faces.size(); i++ )
-    {
-        cv::Point center( faces[i].x + faces[i].width/2, faces[i].y + faces[i].height/2 );
-        ellipse( frame, center, cv::Size( faces[i].width/2, faces[i].height/2 ), 0, 0, 360, cv::Scalar( 255, 0, 255 ), 4 );
-        cv::Mat faceROI = frame_gray( faces[i] );
-    }
-}
+
 
 
 void TextureConverter::updateTexture(GLuint textureID,
                              cv::Mat& mat)
 {
+
     GLFWwindow* currentWindow = glfwGetCurrentContext();
     if (!currentWindow) {
         std::cout << "ERROR: No OpenGL context is current!" << std::endl;
         return;
     }
     //std::cout << "Current GLFW window: " << currentWindow << std::endl;
+     static int frameCount = 0;  // ← Initialized ONCE, first call only
+    frameCount++;
     
 
       if (mat.empty()) {
         std::cerr << "ERROR: Empty frame for texture update" << std::endl;
      
     }
-           // cv::ellipse(mat,cv::Point(mat.cols/2, mat.rows/2),cv::Size(50,65),0,0,360,cv::Scalar(55, 243, 235),4);
-            detectandDrawFace(mat);
+          
+   // detectandDrawFace(mat);
+   /*if(frameCount%3==0){
+       faceD.submitFrame(mat);
+   };*/
+   faceD.submitFrame(mat);
+   if(faceD.getResults(faces)){
+       DrawFace(faces,mat);
+   };
+
     //while (glGetError() != GL_NO_ERROR);
      GLenum err1 = glGetError();
     if (err1 != GL_NO_ERROR) {
@@ -141,4 +136,15 @@ void TextureConverter::updateTexture(GLuint textureID,
     GL_UNSIGNED_BYTE,mat.data);
 
     glBindTexture(GL_TEXTURE_2D,0);
+};
+
+void TextureConverter::DrawFace(std::vector<cv::Rect> & facesrects,cv::Mat frame){
+for(cv::Rect facerect:facesrects){
+
+    cv::Point center(facerect.x +facerect.width/2,
+                        facerect.y+facerect.height/2);
+    cv::ellipse(frame,center,cv::Size(facerect.width/2,facerect.height/2),0,0,360,cv::Scalar(55, 243, 235),4);
+}
+
+
 };

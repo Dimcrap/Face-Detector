@@ -22,6 +22,7 @@ textureConverter.cpp
 GLFwindow.cpp
 imguiRenderer.cpp
 app.cpp
+faceDetector.cpp
 )
 
 target_link_directories(fDetector PRIVATE imgui)
